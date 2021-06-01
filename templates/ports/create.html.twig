@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{{ form_start(form) }}
+	{{ form_row(form.number, {"attr": {"class": "form-control mb-2 mr-sm-2"}}) }}
+	{{ form_row(form.devices, {"attr": {"class": "form-control mb-2 mr-sm-2"}}) }}
+	{{ form_label(form.devices, "To add multiple devices, seperate with ';'") }}
+	{{ form_row(form.submit, {"attr": {"class": "btn btn-primary mb-2"}}) }}
+	{{ form_end(form) }}
+
+	{% for message in messages %}
+		<div class="alert alert-secondary" role="alert">{{ message }}</div>
+	{% endfor %}
+{% endblock %}

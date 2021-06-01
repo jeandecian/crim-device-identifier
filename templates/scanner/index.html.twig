@@ -1,0 +1,79 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>Scanner</h1>
+	{{ form_start(form) }}
+	{{ form_row(form.host, {"attr": {"class": "form-control mb-2 mr-sm-2"}}) }}
+	{{ form_row(form.submit, {"attr": {"class": "btn btn-primary mb-2"}}) }}
+	{{ form_end(form) }}
+
+	{% if results %}
+		<h2>
+			<span class="badge badge-success">Open</span>
+			port for
+			{{ host }}</h2>
+		<table class="table table-bordered table-stripped table-hover">
+			<thead class="thead-light">
+				<tr>
+					<th>Port</th>
+					<th>Service</th>
+					<th>Associated devices</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for result in results %}
+					<tr>
+						<th>{{ result[0] }}</th>
+						<th>{{ result[1] }}</th>
+						<th>
+							{% set split_devices = result[2] %}
+							{% for device in split_devices %}
+								<span class="badge {% if device == matches[0]['device'] %} {{ 'badge-warning' }} {% else %} {{ 'badge-primary' }} {% endif %}">{{ device }}
+								</span>
+							{% endfor %}
+						</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h3>
+			<span class="badge badge-danger">Closed</span>
+			ports for
+			<span class="badge badge-warning">{{ matches[0]["device"] }}</span>
+			:
+			{% for port in closed_ports %}
+				<span class="badge badge-secondary">{{ port }}</span>
+			{% endfor %}
+		</h3>
+		<h2>Probability</h2>
+		<table class="table table-bordered table-stripped table-hover">
+			<thead class="thead-light">
+				<tr>
+					<th>Device</th>
+					<th>Probability</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for match in matches %}
+					<tr>
+						<th>{{ match["device"] }}</th>
+						<th>{{ match["probability"] }}
+							%</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h2>External ressources</h2>
+		<p>
+			<a target="_blank" href="https://censys.io/ipv4/{{ host }}">View in Censys</a>
+		</p>
+		<p>
+			<a target="_blank" href="https://www.shodan.io/host/{{ host }}">View in Shodan</a>
+		</p>
+		<p>
+			<a target="_blank" href="https://www.zoomeye.org/searchResult?q={{ host }}">View in ZoomEye</a>
+		</p>
+	{% else %}
+		{{ message }}
+	{% endif %}
+{% endblock %}

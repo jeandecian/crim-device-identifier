@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>Devices
+		<a href="create" class="btn btn-success" role="button">
+			<span class="fas fa-plus"></span>
+		</a>
+	</h1>
+	<table class="table table-bordered table-stripped table-hover">
+		<thead class="thead-light">
+			<tr>
+				<th>Type</th>
+				<th>Ports</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for device in devices %}
+				<tr>
+					<th>{{ device.type }}</th>
+					<th>
+						{% for port in device.ports|split(";") %}
+							<span class="badge badge-primary">{{ port }}</span>
+						{% endfor %}
+					</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
